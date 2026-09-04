@@ -13,28 +13,20 @@ application:
       when:
         - /login
       do:
-        - src: file:///lzcapp/pkg/content/login-autofill.js
+        - src: builtin://simple-inject-password
           params:
-            username_b64: "{{ .U.username | b64enc }}"
-            password_b64: "{{ .U.password | b64enc }}"
-    - id: open-save-chooser
-      on: browser
-      when:
-        - /*
-      do:
-        - src: file:///lzcapp/pkg/content/lazycat-injects/lzc-file-chooser-inject.js
-
+            user: "{{ .U.username }}"
+            password: "{{ .U.password }}"
 services:
   moontv-core:
     # upstream: ghcr.io/mtvpls/moontvplus:v225.0.1
-    image: ghcr.1ms.run/mtvpls/moontvplus@sha256:36bf3c260237e95dde5ef47752130fb4b8c1c03a1942ce0c51069303585c3f17
-    run_as: 1001
-    command: /bin/sh /lzcapp/pkg/content/start.sh
+    image: ghcr.1ms.run/mtvpls/moontvplus:v225.0.1
+    run_as: 0
     depends_on:
       - moontv-kvrocks
     environment:
-      - USERNAME_B64={{ .U.username | b64enc }}
-      - PASSWORD_B64={{ .U.password | b64enc }}
+      - "USERNAME={{ .U.username }}"
+      - "PASSWORD={{ .U.password }}"
       - NEXT_PUBLIC_STORAGE_TYPE=kvrocks
       - KVROCKS_URL=redis://moontv-kvrocks:6666
       - CRON_PASSWORD={{ stable_secret "cron_password" }}
@@ -42,9 +34,9 @@ services:
       - /lzcapp/var/moontvplus/downloads:/data
 
   moontv-kvrocks:
-    # upstream: docker.io/apache/kvrocks:latest
-    image: docker.1ms.run/apache/kvrocks@sha256:3fda9cf42b27ff7252333146139d5e9c157f98f288e3b09dcbf127c49c132526
-    run_as: 999
+    # upstream: docker.io/apache/kvrocks:2.15.0
+    image: docker.1ms.run/apache/kvrocks:2.15.0
+    run_as: 0
     binds:
       - /lzcapp/var/moontvplus/kvrocks:/var/lib/kvrocks/db
 

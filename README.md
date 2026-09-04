@@ -4,12 +4,11 @@ LazyCat LPK v2 packaging for [MoonTVPlus](https://github.com/mtvpls/MoonTVPlus),
 
 ## Runtime
 
-- Single MoonTVPlus `225.0.1` instance backed by persistent Kvrocks storage.
-- The setup wizard creates a site username and random password; `/login` is autofilled.
+- Single MoonTVPlus `v225.0.1` instance backed by persistent Kvrocks `2.15.0` storage.
+- The setup wizard creates a site username and random password; `/login` is autofilled by the built-in password injector.
 - The application root is public because MoonTVPlus provides its own authentication.
 - Server-side offline downloads persist under `/lzcapp/var/moontvplus/downloads`.
-- Persistent paths use lzcos 1.6 owner mapping for the images' non-root UIDs (1001 and 999).
-- Browser file download flows use the LazyCat file-picker injection.
+- Both services run as root as requested so their persistent directories remain writable without UID owner mapping.
 - MoonTVPlus ships as an empty shell without built-in video or live sources. Add only sources you are legally authorized to access.
 
 The supplied 500×500 logo was resized to the required 512×512 PNG and palette-optimized to 59 KB.
