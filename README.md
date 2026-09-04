@@ -8,6 +8,7 @@ LazyCat LPK v2 packaging for [MoonTVPlus](https://github.com/mtvpls/MoonTVPlus),
 - The setup wizard creates a site username and random password; `/login` is autofilled.
 - The application root is public because MoonTVPlus provides its own authentication.
 - Server-side offline downloads persist under `/lzcapp/var/moontvplus/downloads`.
+- Persistent paths use lzcos 1.6 owner mapping for the images' non-root UIDs (1001 and 999).
 - Browser file download flows use the LazyCat file-picker injection.
 - MoonTVPlus ships as an empty shell without built-in video or live sources. Add only sources you are legally authorized to access.
 
