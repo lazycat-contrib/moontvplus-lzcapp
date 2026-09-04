@@ -1,0 +1,49 @@
+application:
+  subdomain: moontvplus
+  multi_instance: false
+  upstreams:
+    - location: /
+      backend: http://moontv-core:3000/
+      fix_websocket_header: true
+  public_path:
+    - /
+  injects:
+    - id: moontvplus-login
+      on: browser
+      when:
+        - /login
+      do:
+        - src: builtin://simple-inject-password
+          params:
+            user: "{{ .U.username }}"
+            password: "{{ .U.password }}"
+    - id: open-save-chooser
+      on: browser
+      when:
+        - /*
+      do:
+        - src: file:///lzcapp/pkg/content/lazycat-injects/lzc-file-chooser-inject.js
+
+services:
+  moontv-core:
+    # upstream: ghcr.io/mtvpls/moontvplus:v225.0.1
+    image: ghcr.1ms.run/mtvpls/moontvplus@sha256:36bf3c260237e95dde5ef47752130fb4b8c1c03a1942ce0c51069303585c3f17
+    depends_on:
+      - moontv-kvrocks
+    environment:
+      - "USERNAME={{ .U.username }}"
+      - "PASSWORD={{ .U.password }}"
+      - NEXT_PUBLIC_STORAGE_TYPE=kvrocks
+      - KVROCKS_URL=redis://moontv-kvrocks:6666
+      - CRON_PASSWORD={{ stable_secret "cron_password" }}
+    binds:
+      - /lzcapp/var/moontvplus/downloads:/data
+
+  moontv-kvrocks:
+    # upstream: docker.io/apache/kvrocks:latest
+    image: docker.1ms.run/apache/kvrocks@sha256:3fda9cf42b27ff7252333146139d5e9c157f98f288e3b09dcbf127c49c132526
+    binds:
+      - /lzcapp/var/moontvplus/kvrocks:/var/lib/kvrocks/db
+
+usage: |
+  Sign in at /login with the username and password selected during installation. The application starts without built-in video or live sources; add only sources you are authorized to use. Kvrocks state and server-side offline downloads persist in application storage.

@@ -1,0 +1,30 @@
+params:
+  - id: username
+    type: string
+    name: Administrator Username
+    description: Owner username used to sign in to MoonTVPlus
+    default_value: admin
+    optional: false
+
+  - id: password
+    type: secret
+    name: Administrator Password
+    description: Owner password used to sign in to MoonTVPlus; the generated alphanumeric default is recommended
+    default_value: "$random(len=24)"
+    optional: false
+
+locales:
+  zh:
+    username:
+      name: 管理员用户名
+      description: 登录 MoonTVPlus 使用的站长账号
+    password:
+      name: 管理员密码
+      description: 登录 MoonTVPlus 使用的站长密码；建议保留自动生成的字母数字默认值
+  en:
+    username:
+      name: Administrator Username
+      description: Owner username used to sign in to MoonTVPlus
+    password:
+      name: Administrator Password
+      description: Owner password used to sign in; the generated alphanumeric default is recommended

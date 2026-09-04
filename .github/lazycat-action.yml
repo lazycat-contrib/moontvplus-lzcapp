@@ -1,0 +1,40 @@
+version: 1
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/application.lpk
+  target_arch: amd64
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: image
+    image: moontv-core
+
+build:
+  toolchains: []
+  run_buildscript: false
+
+images:
+  - id: moontv-core
+    target: service
+    service: moontv-core
+    source: ghcr.io/mtvpls/moontvplus
+    channel: stable
+    sort: semver
+    tag_regex: '^v?\d+\.\d+\.\d+$'
+    delivery:
+      mode: mirror
+      require_digest_match: true
+
+stores:
+  official:
+    enabled: false
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: MoonTVPlus
+    summary: MoonTVPlus 是基于 MoonTV v100 二次开发的增强版影视聚合播放器，支持外部播放器、视频超分、弹幕和评论抓取。
