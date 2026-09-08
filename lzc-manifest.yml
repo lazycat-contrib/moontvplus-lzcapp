@@ -19,8 +19,8 @@ application:
             password: "{{ .U.password }}"
 services:
   moontv-core:
-    # upstream: ghcr.io/mtvpls/moontvplus:v225.0.1
-    image: ghcr.1ms.run/mtvpls/moontvplus:v225.0.1
+    # upstream: ghcr.io/mtvpls/moontvplus:v225.1.0
+    image: ghcr.1ms.run/mtvpls/moontvplus:v225.1.0
     run_as: 0
     depends_on:
       - moontv-kvrocks
@@ -32,13 +32,11 @@ services:
       - CRON_PASSWORD={{ stable_secret "cron_password" }}
     binds:
       - /lzcapp/var/moontvplus/downloads:/data
-
   moontv-kvrocks:
     # upstream: docker.io/apache/kvrocks:2.15.0
     image: docker.1ms.run/apache/kvrocks:2.15.0
     run_as: 0
     binds:
       - /lzcapp/var/moontvplus/kvrocks:/var/lib/kvrocks/db
-
 usage: |
   Sign in at /login with the username and password selected during installation. The application starts without built-in video or live sources; add only sources you are authorized to use. Kvrocks state and server-side offline downloads persist in application storage.
