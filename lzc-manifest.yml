@@ -19,8 +19,8 @@ application:
             password: "{{ .U.password }}"
 services:
   moontv-core:
-    # upstream: ghcr.io/mtvpls/moontvplus:v225.1.0
-    image: ghcr.1ms.run/mtvpls/moontvplus:v225.1.0
+    # upstream: ghcr.io/mtvpls/moontvplus:v226.0.0
+    image: ghcr.1ms.run/mtvpls/moontvplus:v226.0.0
     run_as: 0
     depends_on:
       - moontv-kvrocks
